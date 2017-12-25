@@ -1,0 +1,9 @@
+<div class="col-sm-3">
+	<div droppable (onDrop)="onItemDrop($event)" class="card-header card-inverse card-success">
+		{{id}}
+	    <div class="list-group">
+	        <li draggable class="list-group-item list-group-item-action list-group-item-success"
+	        	*ngFor="let item of listItem" [dragData]="item">{{item.name}}</li>
+	    </div>
+	</div>
+</div>

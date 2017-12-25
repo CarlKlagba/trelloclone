@@ -1,3 +1,23 @@
-<p>
-  project works!
-</p>
+<div class="row">
+	<div class="col-sm-3">
+		<div droppable (onDrop)="onItemDrop($event, 'project1')" class="card-header card-inverse card-success">
+			List Item 1
+		    <div class="list-group">
+		        <li draggable class="list-group-item list-group-item-action list-group-item-success"
+		        	*ngFor="let item of listProjects['project1']" [dragData]="{project: 'project1', item: item}">{{item.name}}</li>
+		    </div>
+		</div>
+	</div>
+	<div class="col-sm-3">
+		<div droppable (onDrop)="onItemDrop($event, 'project2')" class="card-header card-inverse card-success">
+			List Item 2
+			<div class="list-group">
+				<li draggable *ngFor="let item of listProjects['project2']" [dragData]="{project: 'project2', item: item}" class="list-group-item list-group-item-action list-group-item-success">
+					{{item.name}}
+				</li>
+			</div>
+		</div> 
+	</div>
+	<template #stageContainer></template>
+</div>  
+<button (click)="createComponent('stage3')">Create stage</button>
