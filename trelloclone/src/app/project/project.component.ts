@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, ComponentFactory, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ChangeDetectorRef, TemplateRef, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactory, ComponentRef,
+    ComponentFactoryResolver, ViewContainerRef, ChangeDetectorRef,
+    TemplateRef, ViewChild, Output } from '@angular/core';
 
 import { StageComponent } from '../stage/stage.component';
+import { Item } from '../item/item.model';
+import { ItemService } from '../item/item.service';
 
 @Component({
   selector: 'app-project',
@@ -9,45 +13,28 @@ import { StageComponent } from '../stage/stage.component';
 })
 
 export class ProjectComponent implements OnInit {
-	@ViewChild("stageContainer", { read: ViewContainerRef }) container;
- 	componentRef: ComponentRef<StageComponent>;
- 	
- 	listProjects = {
-		project1: [
-				{name: 'Tea'},
-				{name: 'Milk'},
-				{name: 'Coffee'}
-			],
-		project2: []
-	};
-	numberStages : number;
+    @ViewChild('stageContainer', { read: ViewContainerRef }) container;
+    componentRef: ComponentRef<StageComponent>;
 
-  	constructor(private resolver: ComponentFactoryResolver) {}
+    stageItemList1: Item[] = [
+        {name: 'Tea'},
+        {name: 'Milk'},
+        {name: 'Coffee'},
+        {name: 'Cacao'}
+    ];
 
-  	ngOnInit() {
-  		this.numberStages = 1;
-  	};
+    constructor(private resolver: ComponentFactoryResolver, private itemService: ItemService) {}
 
-  	onItemDrop(e: any, project : string){
-  		this.listProjects[project].push(e.dragData.item);
-  		this.removeItem(e.dragData.item, this.listProjects[e.dragData.project]);
-  	};
+    ngOnInit() {
+        this.createStage(this.stageItemList1);
+    }
 
-
-  	removeItem(item: any, list: Array<any>) {
-	    let index = list.map(function (e) {
-	      return e.name
-	    }).indexOf(item.name);
-	    list.splice(index, 1);
-	}
-
-	createComponent(){
+    createStage(listItem: Item[]) {
 	    const factory: ComponentFactory<StageComponent> =
 	    	this.resolver.resolveComponentFactory(StageComponent);
 
-	    this.componentRef = this.container.createComponent(factory);
-	    
-	    this.componentRef.instance.id = "stage" + this.numberStages;
-	    this.numberStages++;
-	}
+        this.componentRef = this.container.createComponent(factory);
+
+        this.componentRef.instance.id = this.itemService.createStage(listItem);
+    }
 }

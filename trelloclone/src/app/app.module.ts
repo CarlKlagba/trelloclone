@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ProjectComponent } from './project/project.component';
 import { StageComponent } from './stage/stage.component';
+import { ItemService } from './item/item.service';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { StageComponent } from './stage/stage.component';
     Ng2DragDropModule.forRoot(),
     FormsModule
   ],
-  providers: [],
+  providers: [ItemService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
