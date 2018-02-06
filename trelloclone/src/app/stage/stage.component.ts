@@ -1,18 +1,20 @@
-import { Component, DoCheck, Input } from '@angular/core';
+import { Component, DoCheck, OnInit, Input } from '@angular/core';
 import { Item } from '../item/item.model';
 import { ItemService } from '../item/item.service';
-import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
+import { Subscription } from 'rxjs/Subscription';
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-stage',
   templateUrl: './stage.component.html',
   styleUrls: ['./stage.component.css', '../app.component.css']
 })
-export class StageComponent implements DoCheck {
+export class StageComponent implements DoCheck, OnInit {
 
     @Input() id: string;
 
     listItem: Item[];
+    dragEvent: Observable<any>;
 
     constructor(private itemService: ItemService) {}
 
@@ -20,8 +22,18 @@ export class StageComponent implements DoCheck {
         this.listItem = this.itemService.getStage(this.id);
     }
 
+    ngOnInit(){
+      this.dragEvent = this.itemService.dragEvent();
+    }
+
     onItemDrop(e: any) {
-		this.itemService.consumItem(e.dragData.stage, this.id);
+      console.log('onItemDrop');
+      this.dragEvent..then( value => {
+        if(value.stageId !== this.id){
+          console.log('subscribe   '+ value.stageId + '    ID Curr  ' + this.id+ '  ITEM ' + value.item.name);
+          this.itemService.moveItem(value.stageId, this.id, value.item);
+        }
+      });
     }
 
     onItemDrag(item: Item) {

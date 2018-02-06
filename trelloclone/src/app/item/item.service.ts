@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Item } from './item.model';
 import { Subject } from 'rxjs/Subject';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class ItemService {
@@ -8,7 +9,7 @@ export class ItemService {
 
     numberStages: number;
 
-    private publishedItem  = {stageId : '', item: <Item> {name: null}};
+    private _dragEvent = new Subject<any>();
 
     constructor() {
         this.numberStages = 0;
@@ -22,26 +23,24 @@ export class ItemService {
     }
 
     public getStage(id: string): Item[] {
+        console.log('getStage ');
         return this.stagesItemList[id];
     }
 
     public moveItem(sourceStage: string, destStage: string, item: Item): void {
+        console.log(' moveItem   destStage '+ destStage + '     sourceStage  '+ sourceStage + '     item '+item.name);
         this.stagesItemList[destStage].push(item);
-        this.removeItem(item, this.stagesItemList[destStage]);
+        this.removeItem(item, this.stagesItemList[sourceStage]);
+        console.log(this.stagesItemList[destStage]);
     }
 
     public publishItem(stageId: string, item: Item) {
-         this.publishedItem = {stageId : stageId, item: item};
-         console.log('publishItem ' + this.publishedItem);
+         console.log('publishItem ');
+         this._dragEvent.next({stageId : stageId, item: item});
     }
 
-    public consumItem(sourceStage: string, destStage: string) {
-        console.log('consum Item start ' + sourceStage + '   ' + this.publishedItem.stageId);
-        console.log(sourceStage === this.publishedItem.stageId);
-       if (sourceStage === this.publishedItem.stageId) {
-           this.moveItem(sourceStage, destStage, this.publishedItem.item);
-       }
-       console.log('consum Item done ' + sourceStage + '  '  + destStage);
+    public dragEvent(): Observable<any> {
+          return this._dragEvent.asObservable();
     }
 
     removeItem(item: Item, list: Item[]) {

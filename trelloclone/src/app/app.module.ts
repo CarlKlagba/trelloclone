@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Ng2DragDropModule } from 'ng2-drag-drop';
+import { NgDragDropModule } from 'ng-drag-drop';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -18,7 +18,7 @@ import { ItemService } from './item/item.service';
   entryComponents: [StageComponent],
   imports: [
     BrowserModule,
-    Ng2DragDropModule.forRoot(),
+    NgDragDropModule.forRoot(),
     FormsModule
   ],
   providers: [ItemService],

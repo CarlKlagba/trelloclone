@@ -32,9 +32,7 @@ export class ProjectComponent implements OnInit {
     createStage(listItem: Item[]) {
 	    const factory: ComponentFactory<StageComponent> =
 	    	this.resolver.resolveComponentFactory(StageComponent);
-
-        this.componentRef = this.container.createComponent(factory);
-
-        this.componentRef.instance.id = this.itemService.createStage(listItem);
+	    this.componentRef = this.container.createComponent(factory);
+	    this.componentRef.instance.id = this.itemService.createStage(listItem);
     }
 }
