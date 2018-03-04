@@ -3,6 +3,7 @@ package org.trelloclone.stage.controller;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -72,9 +73,35 @@ public class StageControllerTest {
 			.andExpect(jsonPath("$.items", empty()));
 	}
 	
-	public void moveItemTest() {
-		doNothing().when(stageService).moveItem("1", "2", new Item("item"));
-		//TODO
+	@Test
+	public void addItemInStageTest() throws Exception {
+		when(stageService.addItemInStage(anyString(), any()))
+		.thenReturn(new Stage("1", Arrays.asList(new Item("itemA"), new Item("itemB"))));
+		
+		this.mockMvc.perform(put("/stages/1/item")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"itemB\"}"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(this.contentType))
+		.andExpect(jsonPath("$.id", is("1")))
+		.andExpect(jsonPath("$.items", hasSize(2)))
+		.andExpect(jsonPath("$.items[0].name", is("itemA")))
+		.andExpect(jsonPath("$.items[1].name", is("itemB")));
+	}
+	
+	@Test
+	public void moveItemTest() throws Exception {
+//		ArgumentCaptor<Item> argCaptor = ArgumentCaptor.forClass(Item.class);
+		Item item = new Item("item");
+		doNothing().when(stageService).moveItem("1", "2", item);
+		
+		this.mockMvc.perform(put("/stages/item?source=1&destination=2 ")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"item\"}"))
+			.andExpect(status().isOk());
+		// TODO
+//		verify(stageService, times(1)).moveItem(eq("1"), eq("2"), argCaptor.capture());
+//		assertThat(item.getName(), is(argCaptor.getValue().getName()));
 	}
 	
 	

@@ -1,6 +1,8 @@
 package org.trelloclone.stage.model;
 
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Stage {
 	
@@ -25,6 +27,16 @@ public class Stage {
 
 	public List<Item> getItems() {
 		return items;
+	}
+	
+	public void addItem(Item item) {
+		items.add(item);
+	}
+	
+	public void removeItem(Item item) {
+		items = items.stream()
+			.filter(i -> !i.equals(item))
+			.collect(Collectors.toList());
 	}
 	
 }

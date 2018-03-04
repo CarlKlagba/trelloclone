@@ -10,9 +10,8 @@
     	<java.version>1.8</java.version>
     	<spring.boot.version>1.5.10.RELEASE</spring.boot.version>
     	<junit.version>4.12</junit.version>
-    	<mockito.version>1.9.5</mockito.version>
+    	<mockito.version>1.10.19</mockito.version>
     </properties>
-    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,6 +37,13 @@
 		    <version>${mockito.version}</version>
 		    <scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>org.assertj</groupId>
+		    <artifactId>assertj-core</artifactId>
+		    <version>3.8.0</version>
+		    <scope>test</scope>
+		</dependency>
+		
     </dependencies>
 
     <build>
